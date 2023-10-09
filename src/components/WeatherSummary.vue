@@ -1,9 +1,6 @@
 <template>
   <div class="summary">
-    <div
-      style="background-image: url(../assets/img/weather-main/thunderstorm.png)"
-      class="pic-main"
-    ></div>
+    <div class="pic-main"></div>
     <div class="weather">
       <div class="temp">14 °C</div>
       <div class="weather-desc text-block">Thunderstorm</div>
@@ -21,6 +18,7 @@
   width: 60px
   height: 60px
   margin: 20px 0 12px
+  background-image: './assets/img/weather-main/thunderstorm.png'
   background-repeat: no-repeat
   background-position: 50% 50%
   background-size: contain
