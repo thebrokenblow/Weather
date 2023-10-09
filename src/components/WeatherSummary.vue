@@ -1,16 +1,33 @@
+<script setup>
+defineProps({
+  weatherInfo: {
+    type: [Object, null],
+    required: true,
+  },
+});
+const today = new Date().toLocaleString("en-EN", {
+  weekday: "short",
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+</script>
+
 <template>
-  <div class="summary">
+  <div v-if="weatherInfo?.weather" class="summary">
     <div class="pic-main"></div>
     <div class="weather">
-      <div class="temp">14 °C</div>
-      <div class="weather-desc text-block">Thunderstorm</div>
+      <div class="temp">{{ weatherInfo?.main.temp }} °C</div>
+      <div class="weather-desc text-block">
+        {{ weatherInfo?.weather[0].description }}
+      </div>
     </div>
-    <div class="city text-block">Paris, FR</div>
-    <div class="date text-block">Thu, March 16, 2023</div>
+    <div class="city text-block">
+      {{ weatherInfo?.name }}, {{ weatherInfo?.sys?.country }}
+    </div>
+    <div class="date text-block">{{ today }}</div>
   </div>
 </template>
-
-<script></script>
 
 <style lang="sass" scoped>
 @import '../assets/styles/main.sass'
@@ -18,7 +35,6 @@
   width: 60px
   height: 60px
   margin: 20px 0 12px
-  background-image: './assets/img/weather-main/thunderstorm.png'
   background-repeat: no-repeat
   background-position: 50% 50%
   background-size: contain
