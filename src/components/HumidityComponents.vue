@@ -6,7 +6,7 @@
         <div class="block-bottom-texts">
           <div class="block-bottom-text-block">
             <div class="block-bottom-text-block-title">
-              Humidity: {{ humidity }} %
+              Humidity: {{ this.humidity }} %
             </div>
             <div class="block-bottom-text-block-desc">
               Humidity is the concentration of water vapor present in the air.
@@ -23,11 +23,13 @@
   </section>
 </template>
 
-<script setup>
-defineProps({
-  humidity: {
-    type: Number,
-    required: true,
+<script>
+export default {
+  props: {
+    humidity: {
+      type: Number,
+      required: true,
+    },
   },
-});
+};
 </script>

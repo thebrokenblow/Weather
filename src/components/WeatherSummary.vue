@@ -1,33 +1,48 @@
-<script setup>
+<script>
 import { capitalizeFirstLetter } from "../utils";
 
-defineProps({
-  weatherInfo: {
-    type: [Object, null],
-    required: true,
+export default {
+  data() {
+    return {
+      today: Object,
+      pressure: Number,
+    };
   },
-});
-
-
-const today = new Date().toLocaleString("en-EN", {
-  weekday: "short",
-  year: "numeric",
-  month: "long",
-  day: "numeric",
-});
+  props: {
+    weatherInfo: {
+      type: [Object, null],
+      required: true,
+    },
+  },
+  methods: {
+    capitalizeFirstLetter(description) {
+      return capitalizeFirstLetter(description);
+    },
+  },
+  created() {
+    this.today = new Date().toLocaleString("en-EN", {
+      weekday: "short",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  },
+};
 </script>
 
 <template>
   <div v-if="weatherInfo?.weather" class="summary">
     <div class="pic-main"></div>
     <div class="weather">
-      <div class="temp">{{ Math.round(weatherInfo?.main.temp) }} °C</div>
+      <div class="temp">{{ Math.round(this.weatherInfo?.main.temp) }} °C</div>
       <div class="weather-desc text-block">
-        {{ capitalizeFirstLetter(weatherInfo?.weather[0].description) }}
+        {{
+          this.capitalizeFirstLetter(this.weatherInfo?.weather[0].description)
+        }}
       </div>
     </div>
     <div class="city text-block">
-      {{ weatherInfo?.name }}, {{ weatherInfo?.sys?.country }}
+      {{ this.weatherInfo?.name }}, {{ this.weatherInfo?.sys?.country }}
     </div>
     <div class="date text-block">{{ today }}</div>
   </div>

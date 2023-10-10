@@ -4,6 +4,7 @@ import WeatherHighlights from "./components/WeatherHighlights.vue";
 import CoordsComponents from "./components/CoordsComponents.vue";
 import HumidityComponents from "./components/HumidityComponents.vue";
 import { API_KEY, BASE_URL } from "./constants/index";
+import { capitalizeFirstLetter } from "./utils/index";
 
 export default {
   data() {
@@ -23,6 +24,9 @@ export default {
       fetch(`${BASE_URL}?q=${this.city}&units=metric&appid=${API_KEY}`)
         .then((response) => response.json())
         .then((commits) => (this.weatherInfo = commits));
+    },
+    capitalizeFirstLetter(description) {
+      return capitalizeFirstLetter(description);
     },
   },
 
@@ -60,7 +64,7 @@ export default {
                 <div v-else class="error">
                   <div class="error-title">Oooops! Something went wrong</div>
                   <div v-if="weatherInfo?.message" class="error-message">
-                    {{ weatherInfo?.message }}
+                    {{ this.capitalizeFirstLetter(weatherInfo?.message) }}
                   </div>
                 </div>
               </div>

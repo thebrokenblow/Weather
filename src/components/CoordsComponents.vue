@@ -6,7 +6,7 @@
         <div class="block-bottom-texts">
           <div class="block-bottom-text-block">
             <div class="block-bottom-text-block-title">
-              Longitude: {{ coordinate?.lon }}
+              Longitude: {{ this.coordinate?.lon }}
             </div>
             <div class="block-bottom-text-block-desc">
               Longitude measures distance east or west of the prime meridian.
@@ -14,7 +14,7 @@
           </div>
           <div class="block-bottom-text-block">
             <div class="block-bottom-text-block-title">
-              Latitude: {{ coordinate?.lat }}
+              Latitude: {{ this.coordinate?.lat }}
             </div>
             <div class="block-bottom-text-block-desc">
               Latitude lines start at the equator (0 degrees latitude) and run
@@ -27,11 +27,13 @@
   </section>
 </template>
 
-<script setup>
-defineProps({
-  coordinate: {
-    type: Object,
-    required: true,
+<script>
+export default {
+  props: {
+    coordinate: {
+      type: Object,
+      required: true,
+    },
   },
-});
+};
 </script>
