@@ -118,6 +118,7 @@ export default {
   data() {
     return {
       PRESSURE_UNITS: 0,
+      pressure: Number,
     };
   },
   props: {
@@ -142,11 +143,10 @@ export default {
       });
     },
     getPressureMm() {
-      console.log(this.weatherInfo.main.pressure * this.PRESSURE_UNITS);
-      return Math.round(this.weatherInfo.main.pressure * this.PRESSURE_UNITS);
+      return Math.round(this.weatherInfo?.main.pressure * this.PRESSURE_UNITS);
     },
   },
-  beforeCreate() {
+  created() {
     this.PRESSURE_UNITS = 0.750062;
   },
 };

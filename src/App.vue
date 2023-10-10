@@ -26,6 +26,12 @@ export default {
     },
   },
 
+  computed: {
+    isError() {
+      return this.weatherInfo?.cod !== 200;
+    },
+  },
+
   created() {
     this.getWeather();
   },
@@ -38,7 +44,9 @@ export default {
       <div class="container">
         <div class="laptop">
           <div class="sections">
-            <section class="section section-left">
+            <section
+              :class="['section', 'section-left', { 'section-error': isError }]"
+            >
               <div class="info">
                 <div class="city-inner">
                   <input
@@ -48,14 +56,20 @@ export default {
                     class="search"
                   />
                 </div>
-                <WeatherSummary :weatherInfo="weatherInfo" />
+                <WeatherSummary v-if="!isError" :weatherInfo="weatherInfo" />
+                <div v-else class="error">
+                  <div class="error-title">Oooops! Something went wrong</div>
+                  <div v-if="weatherInfo?.message" class="error-message">
+                    {{ weatherInfo?.message }}
+                  </div>
+                </div>
               </div>
             </section>
-            <section class="section section-right">
+            <section v-if="!isError" class="section section-right">
               <WeatherHighlights :weatherInfo="weatherInfo" />
             </section>
           </div>
-          <div v-if="weatherInfo?.weather" class="sections">
+          <div v-if="!isError" class="sections">
             <CoordsComponents :coordinate="weatherInfo.coord" />
             <HumidityComponents :humidity="weatherInfo?.main.humidity" />
           </div>
@@ -66,7 +80,7 @@ export default {
 </template>
 
 <style lang="sass" scoped>
-@import './assets/styles/main.sass'
+@import './assets/styles/main'
 .page
   position: relative
   display: flex
@@ -95,6 +109,11 @@ export default {
 
   @media (max-width: 767px)
     width: 100%
+    padding-right: 0
+
+  &.section-error
+    min-width: 235px
+    width: auto
     padding-right: 0
 
 .section-right
@@ -147,4 +166,15 @@ export default {
 
   @media (max-width: 767px)
     width: 100%
+
+.error
+  padding-top: 20px
+
+  &-title
+    font-size: 18px
+    font-weight: 700
+
+  &-message
+    padding-top: 10px
+    font-size: 13px
 </style>
