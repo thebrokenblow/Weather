@@ -1,10 +1,14 @@
 <script setup>
+import { capitalizeFirstLetter } from "../utils";
+
 defineProps({
   weatherInfo: {
     type: [Object, null],
     required: true,
   },
 });
+
+
 const today = new Date().toLocaleString("en-EN", {
   weekday: "short",
   year: "numeric",
@@ -17,9 +21,9 @@ const today = new Date().toLocaleString("en-EN", {
   <div v-if="weatherInfo?.weather" class="summary">
     <div class="pic-main"></div>
     <div class="weather">
-      <div class="temp">{{ weatherInfo?.main.temp }} °C</div>
+      <div class="temp">{{ Math.round(weatherInfo?.main.temp) }} °C</div>
       <div class="weather-desc text-block">
-        {{ weatherInfo?.weather[0].description }}
+        {{ capitalizeFirstLetter(weatherInfo?.weather[0].description) }}
       </div>
     </div>
     <div class="city text-block">

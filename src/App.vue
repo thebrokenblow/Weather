@@ -1,3 +1,37 @@
+<script>
+import WeatherSummary from "./components/WeatherSummary.vue";
+import WeatherHighlights from "./components/WeatherHighlights.vue";
+import CoordsComponents from "./components/CoordsComponents.vue";
+import HumidityComponents from "./components/HumidityComponents.vue";
+import { API_KEY, BASE_URL } from "./constants/index";
+
+export default {
+  data() {
+    return {
+      city: "Paris",
+      weatherInfo: null,
+    };
+  },
+  components: {
+    WeatherSummary,
+    WeatherHighlights,
+    CoordsComponents,
+    HumidityComponents,
+  },
+  methods: {
+    getWeather() {
+      fetch(`${BASE_URL}?q=${this.city}&units=metric&appid=${API_KEY}`)
+        .then((response) => response.json())
+        .then((commits) => (this.weatherInfo = commits));
+    },
+  },
+
+  created() {
+    this.getWeather();
+  },
+};
+</script>
+
 <template>
   <div class="page">
     <main class="main">
@@ -18,82 +52,18 @@
               </div>
             </section>
             <section class="section section-right">
-              <WeatherHighlights />
+              <WeatherHighlights :weatherInfo="weatherInfo" />
             </section>
           </div>
-          <div class="sections">
-            <section class="section-bottom">
-              <div class="block-bottom">
-                <div class="block-bottom-inner">
-                  <div class="block-bottom-pic pic-coords"></div>
-                  <div class="block-bottom-texts">
-                    <div class="block-bottom-text-block">
-                      <div class="block-bottom-text-block-title">
-                        Longitude: 2.3488
-                      </div>
-                      <div class="block-bottom-text-block-desc">
-                        Longitude measures distance east or west of the prime
-                        meridian.
-                      </div>
-                    </div>
-                    <div class="block-bottom-text-block">
-                      <div class="block-bottom-text-block-title">
-                        Latitude: 48.8534
-                      </div>
-                      <div class="block-bottom-text-block-desc">
-                        Latitude lines start at the equator (0 degrees latitude)
-                        and run east and west, parallel to the equator.
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </section>
-            <section class="section-bottom">
-              <div class="block-bottom">
-                <div class="block-bottom-inner">
-                  <div class="block-bottom-pic pic-humidity"></div>
-                  <div class="block-bottom-texts">
-                    <div class="block-bottom-text-block">
-                      <div class="block-bottom-text-block-title">
-                        Humidity: 60 %
-                      </div>
-                      <div class="block-bottom-text-block-desc">
-                        Humidity is the concentration of water vapor present in
-                        the air. Water vapor, the gaseous state of water, is
-                        generally invisible to the human eye.
-                        <br /><br />
-                        The same amount of water vapor results in higher
-                        relative humidity in cool air than warm air.
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </section>
+          <div v-if="weatherInfo?.weather" class="sections">
+            <CoordsComponents :coordinate="weatherInfo.coord" />
+            <HumidityComponents :humidity="weatherInfo?.main.humidity" />
           </div>
         </div>
       </div>
     </main>
   </div>
 </template>
-
-<script setup>
-import { ref } from "vue";
-import WeatherSummary from "./components/WeatherSummary.vue";
-import WeatherHighlights from "./components/WeatherHighlights.vue";
-import { API_KEY, BASE_URL } from "./constants/index";
-
-const city = ref("Paris");
-let weatherInfo = ref(null);
-function getWeather() {
-  fetch(`${BASE_URL}?q=${city.value}&units=metric&appid=${API_KEY}`)
-    .then((response) => response.json())
-    .then((commits) => (weatherInfo.value = commits));
-}
-
-getWeather();
-</script>
 
 <style lang="sass" scoped>
 @import './assets/styles/main.sass'
