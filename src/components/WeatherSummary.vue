@@ -32,7 +32,10 @@ export default {
 
 <template>
   <div v-if="weatherInfo?.weather" class="summary">
-    <div class="pic-main"></div>
+    <div
+      :style="`background-image: url('/weather-main/${weatherInfo?.weather[0].description}.png');`"
+      class="pic-main"
+    ></div>
     <div class="weather">
       <div class="temp">{{ Math.round(this.weatherInfo?.main.temp) }} °C</div>
       <div class="weather-desc text-block">
